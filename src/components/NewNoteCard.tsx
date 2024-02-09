@@ -51,14 +51,19 @@ export default function NewNoteCard({ onNoteCreate }: NewNoteCardProps) {
 
     speechRecognition.onresult = (event) => {
       let str = content.slice(-1);
-      let transcription = Array.from(event.results).reduce((text, result) => {
-        return text.concat(result[0].transcript);
-      }, "");
+      let transcript = "";
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        if (!(event.results[i][0].confidence > 0)) continue;
+        if (event.results[i].isFinal && event.results[i][0].confidence >= 0.7) {
+          transcript = event.results[i][0].transcript;
+          console.log(transcript);
+        }
+      }
 
       if (str == "\n") {
-        setContent(`${content}${transcription}`);
+        setContent(`${content}${transcript}`);
       } else {
-        setContent(`${content} ${transcription}`.trim());
+        setContent(`${content} ${transcript}`.trim());
       }
     };
 
