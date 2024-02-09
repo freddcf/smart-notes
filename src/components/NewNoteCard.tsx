@@ -12,7 +12,7 @@ let speechRecognition: SpeechRecognition | null = null;
 export default function NewNoteCard({ onNoteCreate }: NewNoteCardProps) {
   const [isRecording, setIsRecording] = useState(false);
   const [content, setContent] = useState("");
-  const [contentBackup, setContentBackup] = useState("");
+  // const [contentBackup, setContentBackup] = useState("");
 
   function handleContentChange(e: ChangeEvent<HTMLTextAreaElement>) {
     setContent(e.target.value.trimStart());
@@ -25,7 +25,7 @@ export default function NewNoteCard({ onNoteCreate }: NewNoteCardProps) {
     }
     onNoteCreate(content);
     setContent("");
-    setContentBackup("");
+    // setContentBackup("");
 
     toast.success("Nota Criada com sucesso");
   }
@@ -38,7 +38,7 @@ export default function NewNoteCard({ onNoteCreate }: NewNoteCardProps) {
       alert("Infelizmente seu navegador não suporta a API de gravação...");
     }
 
-    setContentBackup(content);
+    // setContentBackup(content);
     setIsRecording(true);
 
     const SpeechRecognitionAPI =
