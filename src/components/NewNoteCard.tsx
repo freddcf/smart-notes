@@ -45,6 +45,7 @@ export default function NewNoteCard({ onNoteCreate }: NewNoteCardProps) {
       window.SpeechRecognition || window.webkitSpeechRecognition;
 
     speechRecognition = new SpeechRecognitionAPI();
+    speechRecognition.stop();
 
     speechRecognition.lang = "pt-BR";
     speechRecognition.continuous = true;
