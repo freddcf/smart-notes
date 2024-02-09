@@ -45,7 +45,6 @@ export default function NewNoteCard({ onNoteCreate }: NewNoteCardProps) {
       window.SpeechRecognition || window.webkitSpeechRecognition;
 
     speechRecognition = new SpeechRecognitionAPI();
-    speechRecognition.stop();
 
     speechRecognition.lang = "pt-BR";
     speechRecognition.continuous = true;
@@ -73,14 +72,6 @@ export default function NewNoteCard({ onNoteCreate }: NewNoteCardProps) {
 
     if (speechRecognition !== null) {
       speechRecognition.stop();
-      let str = contentBackup.slice(-1);
-
-      if (str == "\n") {
-        setContent((prev) => `${contentBackup}${prev}`);
-      } else {
-        setContent((prev) => `${contentBackup} ${prev}`.trim());
-      }
-      setContentBackup(content);
     }
   }
 
