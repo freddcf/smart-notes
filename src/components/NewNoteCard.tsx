@@ -12,6 +12,7 @@ let speechRecognition: SpeechRecognition | null = null;
 export default function NewNoteCard({ onNoteCreate }: NewNoteCardProps) {
   const [isRecording, setIsRecording] = useState(false);
   const [content, setContent] = useState("");
+  const [contentBackup, setContentBackup] = useState("");
 
   function handleContentChange(e: ChangeEvent<HTMLTextAreaElement>) {
     setContent(e.target.value.trimStart());
@@ -24,6 +25,7 @@ export default function NewNoteCard({ onNoteCreate }: NewNoteCardProps) {
     }
     onNoteCreate(content);
     setContent("");
+    setContentBackup("");
 
     toast.success("Nota Criada com sucesso");
   }
@@ -36,6 +38,7 @@ export default function NewNoteCard({ onNoteCreate }: NewNoteCardProps) {
       alert("Infelizmente seu navegador não suporta a API de gravação...");
     }
 
+    setContentBackup(content);
     setIsRecording(true);
 
     const SpeechRecognitionAPI =
@@ -52,15 +55,7 @@ export default function NewNoteCard({ onNoteCreate }: NewNoteCardProps) {
       const transcription = Array.from(event.results).reduce((text, result) => {
         return text.concat(result[0].transcript);
       }, "");
-      console.log(content);
-      let str = content.slice(-1);
-      console.log(str);
-
-      if (str == "\n") {
-        setContent(`${content}${transcription}`.trim());
-      } else {
-        setContent(`${content} ${transcription}`.trim());
-      }
+      setContent(transcription);
     };
 
     speechRecognition.onerror = (event) => {
@@ -77,6 +72,14 @@ export default function NewNoteCard({ onNoteCreate }: NewNoteCardProps) {
 
     if (speechRecognition !== null) {
       speechRecognition.stop();
+      let str = contentBackup.slice(-1);
+
+      if (str == "\n") {
+        setContent((prev) => `${contentBackup}${prev}`);
+      } else {
+        setContent((prev) => `${contentBackup} ${prev}`.trim());
+      }
+      setContentBackup(content);
     }
   }
 
