@@ -28,7 +28,7 @@ Esta aplicação web oferece aos usuários uma maneira rápida e conveniente de 
 
 ## 🌐 Versão online
 
-[![netlify](https://img.shields.io/badge/vercel-000?style=for-the-badge&logo=vercel&logoColor=white)](https://github.com/freddcf/)
+[![netlify](https://img.shields.io/badge/vercel-000?style=for-the-badge&logo=vercel&logoColor=white)](https://smart-notes-freddcf.vercel.app/)
 
 ## 📝 License
 
