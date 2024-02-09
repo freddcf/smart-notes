@@ -1,5 +1,5 @@
 import * as Dialog from "@radix-ui/react-dialog";
-import { Mic, X } from "lucide-react";
+import { ArrowUpRightFromSquare, Mic, X } from "lucide-react";
 import { ChangeEvent, useState } from "react";
 import { toast } from "sonner";
 
@@ -12,6 +12,7 @@ let speechRecognition: SpeechRecognition | null = null;
 export default function NewNoteCard({ onNoteCreate }: NewNoteCardProps) {
   const [isRecording, setIsRecording] = useState(false);
   const [content, setContent] = useState("");
+  const [dialogToggle, setDialogToggle] = useState(false);
 
   function handleContentChange(e: ChangeEvent<HTMLTextAreaElement>) {
     setContent(e.target.value.trimStart());
@@ -78,9 +79,20 @@ export default function NewNoteCard({ onNoteCreate }: NewNoteCardProps) {
     }
   }
 
+  function handleDialogCLose() {
+    handleStopRecording();
+    setContent("");
+  }
+
   return (
-    <Dialog.Root>
-      <Dialog.Trigger className="rounded-md flex flex-col text-left bg-slate-700 p-5 gap-3 outline-none hover:ring-2 hover:ring-slate-600 focus-visible:ring-2 focus-visible:ring-emerald-500">
+    <Dialog.Root
+      open={dialogToggle}
+      onOpenChange={() => {
+        setDialogToggle(!dialogToggle);
+        handleDialogCLose();
+      }}
+    >
+      <Dialog.Trigger className="relative rounded-md flex flex-col text-left bg-slate-700 p-5 gap-3 outline-none hover:ring-2 hover:ring-slate-600 focus-visible:ring-2 focus-visible:ring-emerald-500">
         <span className="text-sm font-medium text-slate-200">
           Adicionar nota
         </span>
@@ -88,6 +100,11 @@ export default function NewNoteCard({ onNoteCreate }: NewNoteCardProps) {
           Grave uma nota em áudio que será convertida para texto
           automaticamente.
         </p>
+
+        <div className="absolute top-0 right-0 w-12 h-12 p-1.5 flex justify-end rounded-tr-md rounded-bl-md bg-slate-500 overflow-hidden">
+          <div className="bg-slate-700 absolute  translate-x-8 translate-y-6 w-[88px] h-[2px] rotate-45" />
+          <ArrowUpRightFromSquare size={18} className="text-slate-400" />
+        </div>
       </Dialog.Trigger>
 
       <Dialog.Portal>
